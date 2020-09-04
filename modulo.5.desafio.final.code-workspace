@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "mongodb-import"
+		},
+		{
+			"path": "app"
+		}
+	],
+	"settings": {}
+}
