@@ -1,5 +1,29 @@
-import React from 'react';
+import React from "react";
+import SelectTransaction from "./components/SelectTransaction";
+import transactionService from "./services/transactionService";
 
 export default function App() {
-  return <h1>Desafio Final do Bootcamp Full Stack</h1>;
+  const [allYearsWithMonths, setAllYearsWithMonths] = React.useState([]);
+
+  const retrieveTransaction = () => {
+    transactionService
+      .getAllYearsWithMonths()
+      .then((res) => {
+        setAllYearsWithMonths(res.data);
+      })
+      .catch((ex) => {
+        console.log(ex);
+      });
+  };
+
+  React.useEffect(() => {
+    retrieveTransaction();
+  }, []);
+
+  return (
+    <div>
+      <h1>Desafio Final do Bootcamp Full Stack</h1>
+      <SelectTransaction transactions={allYearsWithMonths} />
+    </div>
+  );
 }

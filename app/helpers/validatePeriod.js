@@ -1,17 +1,15 @@
 function isValidPeriod(period) {
   try {
-    console.log(period);
     if (
+      typeof period === "undefined" ||
       period === "" ||
       period.length < 6 ||
-      period.length > 7 ||
-      period === undefined
+      period.length > 7
     ) {
       throw new Error(
         "É necessário informar o parâmetro 'period', cujo valor deve estar no formato YYYY-MM onde YYYY deve estar entre [2000-3000] e MM entre [1-12]"
       );
     } else {
-      console.log("object");
       const valitedYearMonth = period.split("-");
       let year = valitedYearMonth[0];
       let month = valitedYearMonth[1];
