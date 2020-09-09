@@ -10,6 +10,17 @@ export default function App() {
       .getAllYearsWithMonths()
       .then((res) => {
         setAllYearsWithMonths(res.data);
+        const dataWithId = [];
+        for (let index = 1; index <= res.data.length; index++) {
+          const {_id, total} = res.data[index - 1];
+          dataWithId.push({
+            id: index,
+            yearMonth: _id,
+            total,
+          });
+        }
+        //console.log(dataWithId);
+        //console.log(res.data);
       })
       .catch((ex) => {
         console.log(ex);
