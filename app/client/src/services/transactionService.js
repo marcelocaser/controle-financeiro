@@ -4,4 +4,8 @@ const getAllYearsWithMonths = () => {
   return http.get("/allYearsWithMonths");
 };
 
-export default { getAllYearsWithMonths };
+const getYearWithMonth = (yearMonth) => {
+  return http.get(`?period=${yearMonth}`);
+};
+
+export default { getAllYearsWithMonths, getYearWithMonth };

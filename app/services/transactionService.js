@@ -1,6 +1,7 @@
 //import mongoose from "mongoose";
 import { isValidPeriod } from "../helpers/validatePeriod.js";
 import TransactionModel from "../models/TransactionModel.js";
+import { formatShortMonth } from "../helpers/formatHelpers.js";
 //const ObjectId = mongoose.Types.ObjectId;
 
 const getYearWithMonth = async (req, res, next) => {
@@ -27,6 +28,32 @@ const getAllYearsWithMonths = async (req, res, next) => {
           total: {
             $sum: 1,
           },
+          despesas: {
+            $sum: {
+              $cond: {
+                if: {
+                  $eq: ["$type", "+"],
+                },
+                then: {
+                  $sum: "$value",
+                },
+                else: 0,
+              },
+            },
+          },
+          receitas: {
+            $sum: {
+              $cond: {
+                if: {
+                  $eq: ["$type", "-"],
+                },
+                then: {
+                  $sum: "$value",
+                },
+                else: 0,
+              },
+            },
+          },
         },
       },
       {
@@ -35,20 +62,26 @@ const getAllYearsWithMonths = async (req, res, next) => {
         },
       },
     ]);
-    const dataWithId = [];
-    for (let index = 1; index <= allYearsMonths.length; index++) {
-      const { _id, total } = allYearsMonths[index - 1];
-      dataWithId.push({
+    const allYearsMonthsComplete = [];
+    for (let index = 1; index < allYearsMonths.length; index++) {
+      const { _id, total, despesas, receitas } = allYearsMonths[index - 1];
+      const yearMonth = _id;
+      const yearMonthShort = formatShortMonth(
+        yearMonth.split("-")[0],
+        yearMonth.split("-")[1],
+        1
+      );
+      allYearsMonthsComplete.push({
         id: index,
-        yearMonth: _id,
-        total,
+        yearMonth,
+        yearMonthShort,
+        despesas,
+        receitas,
+        saldo: despesas - receitas,
+        lancamentos: total,
       });
     }
-    for (let index = 0; index < dataWithId.length; index++) {
-      const element = dataWithId[index];
-      console.log(element);
-    }
-    res.send(dataWithId);
+    res.json(allYearsMonthsComplete);
   } catch (error) {
     next(error);
   }
