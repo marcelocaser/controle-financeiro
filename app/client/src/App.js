@@ -2,12 +2,12 @@ import React from "react";
 import FiltrarLancamentos from "./components/lancamento/FiltrarLancamentos";
 import ListaLancamentos from "./components/lancamento/ListaLancamentos";
 import NovoLancamento from "./components/lancamento/NovoLancamento";
-import SelectPeriod from "./components/selectPeriod/SelectPeriod";
+import SelectPeriod from "./components/period/SelectPeriod";
 import transactionService from "./services/transactionService";
 
 export default function App() {
   const [allYearsWithMonths, setAllYearsWithMonths] = React.useState([]);
-  const [mesAtual, setMesAtual] = React.useState({});
+  const [yearWithMonth, setYearWithMonth] = React.useState({});
 
   React.useEffect(() => {
     const retrieveAllYearsWithMonths = async () => {
@@ -17,8 +17,9 @@ export default function App() {
     retrieveAllYearsWithMonths();
   }, []);
 
-  const handleLancamentoSelected = (mesAnoSelecionado) => {
-    setMesAtual(mesAnoSelecionado);
+  const handlePeriodSelected = (mesAnoSelecionado) => {
+    setYearWithMonth(mesAnoSelecionado);
+    console.log("handlePeriodSelected: " + JSON.stringify(mesAnoSelecionado));
   };
 
   return (
@@ -31,7 +32,10 @@ export default function App() {
       </div>
       <div>
         {allYearsWithMonths.length > 0 && (
-          <SelectPeriod periods={allYearsWithMonths} onLancamentoSelected={handleLancamentoSelected} />
+          <SelectPeriod
+            periods={allYearsWithMonths}
+            onPeriodSelected={handlePeriodSelected}
+          />
         )}
       </div>
       <div className="row">
@@ -43,7 +47,12 @@ export default function App() {
         </div>
       </div>
       <div>
-        <ListaLancamentos lancamento={mesAtual} />
+        {Object.keys(yearWithMonth).length > 0 && (
+          <ListaLancamentos
+            lancamento={yearWithMonth}
+            // onPeriodSelected={handlePeriodSelected}
+          />
+        )}
       </div>
     </>
   );

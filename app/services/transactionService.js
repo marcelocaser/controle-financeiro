@@ -10,8 +10,8 @@ const getYearWithMonth = async (req, res, next) => {
     isValidPeriod(yearMonth);
     yearMonth = await TransactionModel.find({ yearMonth });
     const yearMonthWithTotal = {
-      totalTransaction: yearMonth.length,
-      transaction: yearMonth,
+      totalTransactions: yearMonth.length,
+      transactions: yearMonth,
     };
     res.send(yearMonthWithTotal);
   } catch (error) {

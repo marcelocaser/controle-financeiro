@@ -4,15 +4,19 @@ import DetailsPeriod from "./DetailsPeriod";
 import SelectPreviousPeriod from "./SelectPreviousPeriod";
 import SelectNextPeriod from "./SelectNextPeriod";
 
-export default function SelectPeriod({ periods }) {
-  const [mesAtual, setMesAtual] = React.useState(periods[0]);
-  console.log("SelectPeriod PROPS: " + JSON.stringify(mesAtual));
+export default function SelectPeriod({ periods, onPeriodSelected }) {
+  const [anoMesAtual, setAnoMesAtual] = React.useState(periods[0]);
+  console.log("SelectPeriod PROPS: " + JSON.stringify(anoMesAtual));
 
   /* Recebe o valor de SelectDate, atualizando DetailsPeriod*/
   const handleAnoMesSelected = (mesAnoSelecionado) => {
-    setMesAtual(mesAnoSelecionado);
+    setAnoMesAtual(mesAnoSelecionado);
     //console.log("handleAnoMesSelected: " + JSON.stringify(mesAtual));
   };
+
+  React.useEffect(() => {
+    onPeriodSelected(anoMesAtual);
+  }, [anoMesAtual, onPeriodSelected]);
 
   return (
     <>
@@ -26,13 +30,13 @@ export default function SelectPeriod({ periods }) {
         <SelectPreviousPeriod />
         <SelectDate
           anosMeses={periods}
-          anoMesSelected={mesAtual}
+          anoMesSelected={anoMesAtual}
           onAnoMesSelected={handleAnoMesSelected}
         />
         <SelectNextPeriod />
       </div>
       <div style={{ paddingRight: "20px" }}>
-        <DetailsPeriod detail={mesAtual} />
+        <DetailsPeriod detail={anoMesAtual} />
       </div>
     </>
   );
