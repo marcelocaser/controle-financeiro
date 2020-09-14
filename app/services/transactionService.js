@@ -8,7 +8,7 @@ const getYearWithMonth = async (req, res, next) => {
   try {
     let yearMonth = req.query.period;
     isValidPeriod(yearMonth);
-    yearMonth = await TransactionModel.find({ yearMonth });
+    yearMonth = await TransactionModel.find({ yearMonth }).sort({ day: 1});
     const yearMonthWithTotal = {
       totalTransactions: yearMonth.length,
       transactions: yearMonth,

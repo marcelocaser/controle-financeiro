@@ -22,6 +22,10 @@ export default function App() {
     console.log("handlePeriodSelected: " + JSON.stringify(mesAnoSelecionado));
   };
 
+  const handleOnFiltro = (filtro) => {
+    console.log(filtro);
+  }
+
   return (
     <>
       <div className="container" style={{ textAlign: "center" }}>
@@ -43,14 +47,13 @@ export default function App() {
           <NovoLancamento />
         </div>
         <div className="col s10">
-          <FiltrarLancamentos />
+          <FiltrarLancamentos onFiltro={handleOnFiltro} />
         </div>
       </div>
       <div>
         {Object.keys(yearWithMonth).length > 0 && (
           <ListaLancamentos
             lancamento={yearWithMonth}
-            // onPeriodSelected={handlePeriodSelected}
           />
         )}
       </div>

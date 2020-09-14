@@ -1,16 +1,29 @@
 import React from "react";
 import transactionService from "../../services/transactionService";
 import EditarLacamento from "./EditarLacamento";
+import Opcoes from "./Opcoes";
 
-export default function ListaLancamentos({ lancamento, onPeriodSelected }) {
+/**
+ * Importante para o total funcionamento
+ * do Materialize, incluindo as funcionalidades
+ * que precisam de JavaScript
+ */
+import M from "materialize-css";
+
+export default function ListaLancamentos({ lancamento }) {
   console.log("ListaLancamentos PROPS: " + JSON.stringify(lancamento));
-
   const [transactionsOfYearMonth, setTransactionsOfYearMonth] = React.useState(
     []
   );
+  const [transactionOfYearMonth, setTransactionOfYearMonth] = React.useState(
+    {}
+  );
 
   React.useEffect(() => {
-    console.log("lancamento: " + JSON.stringify(lancamento));
+    M.AutoInit();
+  }, []);
+
+  React.useEffect(() => {
     const retrieveAllTransactions = async () => {
       const res = await transactionService.getYearWithMonth(
         lancamento.yearMonth
@@ -20,9 +33,14 @@ export default function ListaLancamentos({ lancamento, onPeriodSelected }) {
     retrieveAllTransactions();
   }, [lancamento]);
 
-  const handleEditClick = (editLancamento) => {
-
+  const handleOptionClick = (id, type) => {
+    const transaction = transactionsOfYearMonth.find((transaction) => transaction._id === id);
+    setTransactionOfYearMonth(transaction);
   };
+
+  const handlePersistData = (formData) => {
+    console.log(formData)
+  }
 
   return (
     <div className="container center">
@@ -41,26 +59,8 @@ export default function ListaLancamentos({ lancamento, onPeriodSelected }) {
                     <td>{value}</td>
                     <td>
                       <div>
-                        <a
-                          className="modal-trigger material-icons"
-                          href="#editarLancamento"
-                        >
-                          edit
-                        </a>
-                        <span
-                          className="material-icons"
-                          style={{ cursor: "pointer" }}
-                        >
-                          delete
-                        </span>
-                        {/* {!isDeleted && (
-                          <Action
-                            onActionClick={handleActionClick}
-                            //id={id}
-                            grade={grades[index]}
-                            type="delete"
-                          />
-                        )} */}
+                        <Opcoes id={_id} type={"edit"} isModal={true} modalName={"#editarLancamento"} onOptionClick={handleOptionClick} />
+                        <Opcoes id={_id} type={"delete"} isModal={false} />
                       </div>
                     </td>
                   </tr>
@@ -69,27 +69,27 @@ export default function ListaLancamentos({ lancamento, onPeriodSelected }) {
             );
           }
         )}
-      {transactionsOfYearMonth !== null && (
-        <EditarLacamento
-          onEditClick={handleEditClick}
-          lancamento={transactionsOfYearMonth}
-        />
-      )}
+      {/* {Object.keys(transactionOfYearMonth).length > 0 && ( */}
+      <EditarLacamento
+        lancamento={transactionOfYearMonth}
+        onSave={handlePersistData}
+      />
+      {/* )} */}
     </div>
   );
 }
 
-/*const styles = {
-  goodGrade: {
+const styles = {
+  /*goodGrade: {
     fontWeight: "bold",
     color: "green",
   },
   badGrade: {
     fontWeight: "bold",
     color: "red",
-  },
+  },*/
   table: {
     margin: "20px",
     padding: "10px",
   },
-};*/
+};
