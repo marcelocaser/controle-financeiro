@@ -15,28 +15,51 @@ export default function SelectDate({
   //let { id, lancamentos, despesas, receitas, saldo } = anoMesSelected;
   console.log("SelectDate PROPS: " + JSON.stringify(anoMesSelected));
 
-  const [idYearMonthSelected, setIdYearMonthSelected] = React.useState(1);
+  const [idYearMonthSelected, setIdYearMonthSelected] = React.useState(
+    anoMesSelected.id
+  );
   const [yearMonthSelected, setYearMonthSelected] = React.useState(
     anoMesSelected
   );
+
+  //const [yearsMonths, setYearsMonths] = React.useState([]);
+
+  /*React.useEffect(() => {
+    M.AutoInit();
+    const yearMonthObject = anosMeses.find(
+      (yearMonth) => yearMonth.id === idYearMonthSelected
+    );
+    //setYearMonthSelected(yearMonthObject);
+    //Retorna o valor selecionado para ser exibido em DetailsPeriod
+    onAnoMesSelected(yearMonthObject);
+    //console.log("SelectDate NEW: " + JSON.stringify(yearMonthSelected));
+  }, [idYearMonthSelected, anosMeses, onAnoMesSelected]);*/
+
+  React.useEffect(() => {
+    M.AutoInit();
+  }, [anosMeses, idYearMonthSelected]);
 
   React.useEffect(() => {
     const yearMonthObject = anosMeses.find(
       (yearMonth) => yearMonth.id === idYearMonthSelected
     );
+    console.log("idYearMonthSelected : " + JSON.stringify(yearMonthObject));
     setYearMonthSelected(yearMonthObject);
-    /* Retorna o valor selecionado para ser exibido em DetailsPeriod*/
-    onAnoMesSelected(yearMonthSelected);
-    console.log("SelectDate NEW: " + JSON.stringify(yearMonthSelected));
-  }, [yearMonthSelected, idYearMonthSelected, anosMeses, onAnoMesSelected]);
+  }, [anosMeses, idYearMonthSelected, yearMonthSelected]);
 
-  React.useEffect(() => {
-    M.AutoInit();
-  }, [anosMeses]);
+  /*React.useEffect(() => {
+    setYearsMonths(anosMeses);
+  }, [anosMeses]);*/
 
   const handlePeriodChange = (event) => {
-    const newPeriod = parseInt(event.target.value, 10);
-    setIdYearMonthSelected(newPeriod);
+    const newIdPeriod = parseInt(event.target.value, 10);
+    console.log("newIdPeriod: " + newIdPeriod)
+    setIdYearMonthSelected(event.target.value);
+    const yearMonthObject = anosMeses.find(
+      (yearMonth) => yearMonth.id === newIdPeriod
+    );
+    //setYearMonthSelected(yearMonthObject);
+    onAnoMesSelected(yearMonthObject);
   };
 
   return (

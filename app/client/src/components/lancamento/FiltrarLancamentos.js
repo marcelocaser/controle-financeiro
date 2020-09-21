@@ -1,12 +1,10 @@
 import React from "react";
 
-export default function FiltrarLancamentos({ onFiltro }) {
-  const [filtro, setFiltro] = React.useState("");
+export default function FiltrarLancamentos({ onFiltro, filtro }) {
 
   const handleFilter = (event) => {
-    setFiltro(event.target.value);
-    onFiltro(filtro);
-  }
+    onFiltro(event.target.value);
+  };
 
   return (
     <div className="input-field" style={{ marginTop: "-10px" }}>

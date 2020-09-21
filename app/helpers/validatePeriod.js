@@ -33,4 +33,21 @@ function between(compare, initial, final) {
   return (compare - initial) * (compare - final) <= 0;
 }
 
-export { isValidPeriod };
+function isValidFilter(period, filter) {
+  try {
+    isValidPeriod(period);
+    if (
+      typeof filter === "undefined" ||
+      filter === "" ||
+      filter.length <= 0
+    ) {
+      throw new Error(
+        "É necessário informar o parâmetro 'filter'"
+      );
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export { isValidPeriod, isValidFilter };

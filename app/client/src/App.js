@@ -8,6 +8,7 @@ import transactionService from "./services/transactionService";
 export default function App() {
   const [allYearsWithMonths, setAllYearsWithMonths] = React.useState([]);
   const [yearWithMonth, setYearWithMonth] = React.useState({});
+  const [filter, setFilter] = React.useState("");
 
   React.useEffect(() => {
     const retrieveAllYearsWithMonths = async () => {
@@ -23,8 +24,10 @@ export default function App() {
   };
 
   const handleOnFiltro = (filtro) => {
-    console.log(filtro);
-  }
+    const filterTextLowerCase = filtro.toLowerCase();
+    setFilter(filterTextLowerCase);
+    console.log("handleOnFiltro: " + filterTextLowerCase);
+  };
 
   return (
     <>
@@ -39,6 +42,7 @@ export default function App() {
           <SelectPeriod
             periods={allYearsWithMonths}
             onPeriodSelected={handlePeriodSelected}
+            filtro={filter}
           />
         )}
       </div>
@@ -47,14 +51,12 @@ export default function App() {
           <NovoLancamento />
         </div>
         <div className="col s10">
-          <FiltrarLancamentos onFiltro={handleOnFiltro} />
+          <FiltrarLancamentos onFiltro={handleOnFiltro} filtro={filter} />
         </div>
       </div>
       <div>
         {Object.keys(yearWithMonth).length > 0 && (
-          <ListaLancamentos
-            lancamento={yearWithMonth}
-          />
+          <ListaLancamentos lancamento={yearWithMonth} filtro={filter} />
         )}
       </div>
     </>

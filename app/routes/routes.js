@@ -5,6 +5,7 @@ const transactionRouter = express.Router();
 
 transactionRouter.get("/", transactionService.getYearWithMonth)
 transactionRouter.get("/allYearsWithMonths", transactionService.getAllYearsWithMonths);
+transactionRouter.post("/allWithFilter", transactionService.getAllWithFilter);
 
 // funcao tratamento de erro
 transactionRouter.use((err, req, res, next) => {

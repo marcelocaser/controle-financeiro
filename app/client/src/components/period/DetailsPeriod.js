@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function DetailsPeriod({ detail }) {
-  let { id, lancamentos, despesas, receitas, saldo } = detail;
-  console.log("DetailsPeriod PROPS: " + JSON.stringify(detail));
+export default function DetailsPeriod({ anoMesSelected }) {
+  let { id, lancamentos, despesas, receitas, saldo } = anoMesSelected;
+  console.log("DetailsPeriod PROPS: " + JSON.stringify(anoMesSelected));
 
   return (
     <div
